@@ -22,6 +22,19 @@ namespace BorderlessGaming.Forms
             _watcher = new ProcessWatcher(this);
             InitializeComponent();
             LanguageManager.Setup(toolStripLanguages);
+
+            // Apply the UI theme (dark by default). The tray context menu isn't part of
+            // the control tree, so it has to be themed explicitly.
+            Theme.Apply(this, Config.Instance.AppSettings.UseDarkMode);
+            Theme.ApplyToToolStrip(trayIconContextMenu, Config.Instance.AppSettings.UseDarkMode);
+        }
+
+        private void toolStripDarkMode_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.Instance.AppSettings.UseDarkMode = toolStripDarkMode.Checked;
+            Config.Save();
+            Theme.Apply(this, toolStripDarkMode.Checked);
+            Theme.ApplyToToolStrip(trayIconContextMenu, toolStripDarkMode.Checked);
         }
 
         public void AddFavoriteToList(Favorite fav)
@@ -910,6 +923,7 @@ fav.PositionX.ToString()), out int favPositionX);
             toolStripCloseToTray.Checked = settings.CloseToTray;
             toolStripViewFullProcessDetails.Checked = settings.ViewAllProcessDetails;
             toolStripSlowWindowDetection.Checked = settings.SlowWindowDetection;
+            toolStripDarkMode.Checked = settings.UseDarkMode;
 
             // minimize the window if desired (hiding done in Shown)
             if (settings.StartMinimized || Config.Instance.StartupOptions.Minimize)

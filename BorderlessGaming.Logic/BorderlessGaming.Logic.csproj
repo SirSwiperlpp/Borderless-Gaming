@@ -125,7 +125,9 @@
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
+  <!-- Authenticode signing only runs on machines that hold the signing certificate.
+       CI (and anyone without the cert) builds with /p:DisableCodeSigning=true to skip it. -->
+  <PropertyGroup Condition=" '$(DisableCodeSigning)' != 'true' ">
     <PostBuildEvent>call "$(SolutionDir)Tools\DigiCertUtil.exe" sign /noInput /sha1 "CB509F61A8A3B970790F0E2C695A3782F101FF22" "$(ProjectDir)$(OutDir)$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -1,0 +1,49 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ 'v*' ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    env:
+      SOLUTION: BorderlessGaming.sln
+      CONFIGURATION: Release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore NuGet packages
+        run: msbuild $env:SOLUTION -t:Restore -p:Configuration=$env:CONFIGURATION
+
+      - name: Build
+        run: msbuild $env:SOLUTION -t:Rebuild -p:Configuration=$env:CONFIGURATION -p:DisableCodeSigning=true -m
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BorderlessGaming
+          path: BorderlessGaming/bin/Release/
+          if-no-files-found: error
+
+      - name: Package release archive
+        if: startsWith(github.ref, 'refs/tags/')
+        run: Compress-Archive -Path BorderlessGaming/bin/Release/* -DestinationPath BorderlessGaming-${{ github.ref_name }}.zip
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: BorderlessGaming-${{ github.ref_name }}.zip

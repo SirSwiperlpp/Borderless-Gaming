@@ -112,6 +112,7 @@ namespace BorderlessGaming.Forms
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripLanguages = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDarkMode = new System.Windows.Forms.ToolStripMenuItem();
             this.processContext.SuspendLayout();
             this.mnuFavoritesContext.SuspendLayout();
             this.trayIconContextMenu.SuspendLayout();
@@ -446,6 +447,7 @@ namespace BorderlessGaming.Forms
             this.toolStripOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripRunOnStartup,
             this.toolStripLanguages,
+            this.toolStripDarkMode,
             this.toolStripCheckForUpdates,
             this.toolStripMenuItem3,
             this.toolStripGlobalHotkey,
@@ -732,9 +734,16 @@ namespace BorderlessGaming.Forms
             resources.ApplyResources(this.toolStripLanguages, "toolStripLanguages");
             this.toolStripLanguages.Name = "toolStripLanguages";
             this.toolStripLanguages.Text = LanguageManager.Data("toolStripLanguages");
-            // 
+            //
+            // toolStripDarkMode
+            //
+            this.toolStripDarkMode.CheckOnClick = true;
+            this.toolStripDarkMode.Name = "toolStripDarkMode";
+            this.toolStripDarkMode.Text = "Dark Mode";
+            this.toolStripDarkMode.CheckedChanged += new System.EventHandler(this.toolStripDarkMode_CheckedChanged);
+            //
             // MainWindow
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.statusStrip1);
@@ -844,5 +853,6 @@ namespace BorderlessGaming.Forms
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem13;
         private System.Windows.Forms.ToolStripMenuItem toolStripMuteInBackground;
         private System.Windows.Forms.ToolStripMenuItem toolStripLanguages;
+        private System.Windows.Forms.ToolStripMenuItem toolStripDarkMode;
     }
 }
