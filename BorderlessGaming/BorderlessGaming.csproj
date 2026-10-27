@@ -217,6 +217,15 @@
     <EmbeddedResource Include="Resources\master-glyph.png" />
     <None Include="Resources\RainwayLogo.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- Ship the UI translations next to the exe. On first run the app extracts
+         Languages.zip into %AppData% and deletes this copy. Without it the app
+         reports "UI Translations are missing from disk." -->
+    <Content Include="..\Languages\Languages.zip">
+      <Link>Languages.zip</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="PostBuildMacros">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
